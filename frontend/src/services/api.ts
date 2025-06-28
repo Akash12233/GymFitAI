@@ -110,9 +110,9 @@ const retryRequest = async <T>(
   
   for (let i = 0; i < maxRetries; i++) {
     try {
-      console.log(`Attempt ${i + 1}`);
+      // console.log(`Attempt ${i + 1}`);
       const response = await requestFn();
-      console.log(response.data.data)
+      // console.log(response.data.data)
       return response.data.data;
     } catch (error) {
       lastError = error;

@@ -57,7 +57,7 @@ class ExerciseService {
   // Get all gym exercises
   async getGymExercises(): Promise<GymExercise[]> {
     try {
-      console.log("1")
+      // console.log("1")
       const response = await retryRequest(() => 
         apiClient.get<ApiResponse<GymExercise[]>>('/exercise/getgymexercises')
       );
@@ -131,7 +131,7 @@ class ExerciseService {
       const response = await retryRequest(() => 
         apiClient.get<ApiResponse<Exercise[]>>('/statusexercise/exercisebyuser')
       );
-      console.log(response)
+      // console.log(response)
       return response;
     } catch (error) {
       console.error('Failed to fetch user exercises:', error);

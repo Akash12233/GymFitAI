@@ -229,12 +229,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateWorkout = async (id: string, workoutUpdate: Partial<Workout>): Promise<boolean> => {
-    try {
+    try {   
       setWorkouts(prev => {
         const updated = prev.map(w => {
           if (w.id === id) {
             const updatedWorkout = { ...w, ...workoutUpdate };
-            
+              
             // Update user stats if workout is completed
             if (updatedWorkout.completed && !w.completed) {
               setUserStats(prevStats => prevStats ? {
@@ -274,7 +274,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const exerciseUpdates = workout.exercises.map(ex => ({
         _id: ex.id,
         status: {
-          completedByUser: ex.status.completedByUser,
+          completedByUser: workoutUpdate.completed || false,
           totalSets: ex.avgSets,
           completedSets: ex.status.completedByUser ? ex.avgSets : 0,
           totalReps: ex.status.completedByUser ? ex.status.totalReps: 0,

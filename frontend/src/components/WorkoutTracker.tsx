@@ -214,22 +214,21 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, on
     try {
       // Sync any pending updates first
       await syncToBackend();
-
+ updateExerciseLocally(currentExercise.id, {
+      completed: true,
+      status: {
+        ...currentExercise.status,
+        completedByUser: true,
+        completePercent: 100
+      }
+    });
       // Mark exercise as completed
       const success = completeExercise(workout.id, currentExercise.id);
       
       if (!success) {
         throw new Error('Failed to complete exercise');
       }
-      
-      updateExerciseLocally(currentExercise.id, {
-        completed: true,
-        status: {
-          ...currentExercise.status,
-          completedByUser: true,
-          completePercent: 100
-        }
-      });
+           
 
       confetti({
         particleCount: 100,
@@ -242,7 +241,6 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, on
         title: 'Exercise Complete!',
         message: `Great job completing ${currentExercise.name}!`
       });
-
       // Move to next exercise or complete workout
       if (currentExerciseIndex < localExercises.length - 1) {
         setCurrentExerciseIndex(prev => prev + 1);
