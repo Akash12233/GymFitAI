@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService, User, LoginRequest, RegisterRequest } from '../services/authService';
+import { authService, type User, type LoginRequest, type RegisterRequest } from '../services/authService';
 import { useNotifications } from './NotificationContext';
 
 interface AuthContextType {

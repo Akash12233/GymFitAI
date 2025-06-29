@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { useUser } from '../contexts/UserContext';
-import { formatDate, getTodayString, isPastDate, isFutureDate, formatDateForCalender } from '../utils/dateUtils';
+import { formatDate, getTodayString, isPastDate, formatDateForCalender } from '../utils/dateUtils';
 import {  isCurrentDays } from '../utils/isCurrentDay';
 
 const ProgressCalendar: React.FC = () => {

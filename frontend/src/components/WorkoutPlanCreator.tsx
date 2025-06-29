@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, ChevronLeft, User, Target, Activity, Brain, Clock, Dumbbell, Heart, Calendar, RotateCcw, Sparkles, RefreshCw } from 'lucide-react';
+import { X, ChevronRight, ChevronLeft, User, Target, Activity, Brain, Dumbbell, Sparkles, RefreshCw } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../contexts/UserContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { useAutoFill } from '../contexts/AutoFillContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { authService } from '../services/authService';
-import { getTodayString, getDateString } from '../utils/dateUtils';
+import { getTodayString } from '../utils/dateUtils';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -39,8 +39,8 @@ const WorkoutPlanCreator: React.FC<WorkoutPlanCreatorProps> = ({ onClose }) => {
   const [showAutoFillNotification, setShowAutoFillNotification] = useState(false);
 
   
-  const { register, handleSubmit, watch, setValue, reset, formState: { errors } } = useForm<PlanForm>();
-  const { userStats,updateUserStats, addWorkout, clearUserData, syncWithServer } = useUser();
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<PlanForm>();
+  const { userStats,updateUserStats, clearUserData, syncWithServer } = useUser();
   const { addNotification } = useNotifications();
   const { autoFillData, saveAutoFillData, clearAutoFillData, hasAutoFillData, getFieldValue, isFieldAutoFilled } = useAutoFill();
   const { loading: isGenerating, createPlan } = useRecommendations();
@@ -106,7 +106,7 @@ const WorkoutPlanCreator: React.FC<WorkoutPlanCreatorProps> = ({ onClose }) => {
       ];
 
       fieldsToFill.forEach(field => {
-        const value = getFieldValue(field);
+        const value = getFieldValue(field as keyof typeof autoFillData);
         if (value !== undefined) {
           setValue(field, value);
         }
@@ -120,7 +120,17 @@ const WorkoutPlanCreator: React.FC<WorkoutPlanCreatorProps> = ({ onClose }) => {
   const generateComprehensiveWorkoutPlan = async (data: PlanForm) => {
     try {
       // Save current form data for future auto-fill
-      saveAutoFillData(data);
+      saveAutoFillData({
+        ...data,
+        strengthInfo: userStats?.strengthInfo || {
+          maxPushups: data.fitnessLevel === 'beginner' ? 10 : data.fitnessLevel === 'intermediate' ? 20 : 30,
+          maxPullups: data.fitnessLevel === 'beginner' ? 2 : data.fitnessLevel === 'intermediate' ? 5 : 10,
+          maxSquats: data.fitnessLevel === 'beginner' ? 15 : data.fitnessLevel === 'intermediate' ? 25 : 40,
+          maxBenchKg: 10,
+          maxSquatkg: 10,
+          maxDeadliftkg: 10
+        }
+      });
       
       // Clear existing user data before creating new plan
       clearUserData();
@@ -215,7 +225,7 @@ const WorkoutPlanCreator: React.FC<WorkoutPlanCreatorProps> = ({ onClose }) => {
   };
 
   const AutoFillIndicator: React.FC<{ fieldName: keyof PlanForm }> = ({ fieldName }) => {
-    if (!isFieldAutoFilled(fieldName)) return null;
+    if (!isFieldAutoFilled(fieldName as keyof typeof autoFillData)) return null;
     
     return (
       <motion.div

@@ -5,13 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc --noEmit && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
-    "@revenuecat/purchases-js": "^1.7.0",
     "axios": "^1.10.0",
     "canvas-confetti": "^1.6.0",
     "date-fns": "^2.30.0",
@@ -21,14 +20,17 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
-    "react-markdown": "^10.1.0",
     "react-router-dom": "^6.8.1",
     "recharts": "^2.8.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
+    "@revenuecat/purchases-js": "^1.7.0",
+    "react-markdown": "^10.1.0",
+
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",

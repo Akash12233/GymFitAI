@@ -1,4 +1,4 @@
-import { apiClient, retryRequest, ApiResponse } from './api';
+import { apiClient, retryRequest, type ApiResponse } from './api';
 
 // Transaction Types
 interface Transaction {

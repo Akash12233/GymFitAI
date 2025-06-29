@@ -7,12 +7,10 @@ import {
   Target, 
   Users, 
   Star, 
-  Play,
   CheckCircle,
   ArrowRight,
   Dumbbell,
-  Trophy,
-  Clock
+  Trophy
 } from 'lucide-react';
 
 const LandingPage: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, CheckCircle, Plus, Minus, Timer, Trophy, Info } from 'lucide-react';
+import { Play, CheckCircle, Plus, Minus, Timer, Trophy, Info } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useUser } from '../contexts/UserContext';
 import { useNotifications } from '../contexts/NotificationContext';
@@ -44,7 +44,7 @@ interface WorkoutTrackerProps {
   onError?: (error: string) => void;
 }
 
-const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, onError }) => {
+const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete }) => {
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(() => {
     const firstUnfinishedIndex = workout.exercises.findIndex(ex => !ex.status.completedByUser);
     return firstUnfinishedIndex !== -1 ? firstUnfinishedIndex : 0;

@@ -1,18 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import ErrorBoundary from './components/ErrorBoundary.tsx'
-import { AuthProvider } from './contexts/AuthContext.tsx'
-import { AutoFillProvider } from './contexts/AutoFillContext.tsx'
-import { NotificationProvider } from './contexts/NotificationContext.tsx'
-import { UserProvider } from './contexts/UserContext.tsx'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import ErrorBoundary from './components/ErrorBoundary'
+import { AuthProvider } from './contexts/AuthContext'
+import { AutoFillProvider } from './contexts/AutoFillContext'
+import { NotificationProvider } from './contexts/NotificationContext'
+import { UserProvider } from './contexts/UserContext'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ErrorBoundary>
-  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID ?? ""}>
       <Router>
         <NotificationProvider>
           <AuthProvider>

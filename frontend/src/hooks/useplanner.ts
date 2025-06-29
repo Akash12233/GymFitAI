@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { plannerService } from "../services/plannerService";
-import { Planner, PlannerReport } from "../services/plannerService";
-import { ApiError } from "../services/api";
+import { type ApiError } from "../services/api";
 import { useNotifications } from "../contexts/NotificationContext";
 
 interface UsePlannerReturn {
