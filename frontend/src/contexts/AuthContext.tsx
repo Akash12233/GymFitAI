@@ -64,7 +64,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   setIsLoading(true);
   try {
     const response = await authService.loginWithGoogle(googleToken);
-    setUser(response.user);
+    setUser({
+      ...response.user,
+      workoutPhotos: response.user.workoutPhotos ?? [],
+      strengthInfo: response.user.strengthInfo ?? {},
+      premiumExpiry: response.user.premiumExpiry ?? null,
+      preferences: response.user.preferences ?? {},
+    });
 
     addNotification({
       type: 'success',

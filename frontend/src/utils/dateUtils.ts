@@ -51,7 +51,7 @@ export const parseDateString = (dateString: string): Date => {
 };
 
 export const formatDisplayDate = (dateString: string): string => {
-  console.log("date",dateString)
+  // console.log("date",dateString)
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
     weekday: 'short',
