@@ -7,7 +7,9 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
+    allowedHosts: ['630f-2405-201-1002-f084-3573-9143-643-c9bb.ngrok-free.app']
   },
+  
   build: {
     sourcemap: false,
     rollupOptions: {
