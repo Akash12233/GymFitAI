@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, sync } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { motion} from 'framer-motion';
 import { 
   Plus, 
   Play, 
   Pause, 
   CheckCircle, 
-  Calendar,
   Target,
-  Zap,
   Trophy,
-  Clock,
   Flame,
   Activity,
     Search
@@ -22,15 +19,13 @@ import WorkoutTracker from '../components/WorkoutTracker';
 import ProgressCalendar from '../components/ProgressCalendar';
 import StatsCard from '../components/StatsCard';
 import RefreshPlaner from '../components/RefreshPlanner';
-import { PlannerReport } from '../services/plannerService';
-import { usePlanner } from '../hooks/useplanner';
 import ExerciseSearchModal from '../components/ExerciseSearchModal';
 
 
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const { userStats, workouts, getTodaysWorkout , refreshData} = useUser();
+  const { workouts, getTodaysWorkout } = useUser();
   const [showPlanCreator, setShowPlanCreator] = useState(false);
   const [showRefreshPlan,setShowRefreshPlan] = useState(false);
   const [activeWorkout, setActiveWorkout] = useState<string | null>(null);
@@ -81,7 +76,6 @@ const Dashboard: React.FC = () => {
 
     return streak;
   })();
-  const totalWorkouts = userStats?.totalWorkouts || workouts.length;
 
   const handleWorkoutComplete = () => {
     setActiveWorkout(null);
@@ -289,7 +283,7 @@ const Dashboard: React.FC = () => {
               >
                 <h3 className="text-lg font-semibold text-white mb-4">Upcoming Workouts</h3>
                 <div className="space-y-3">
-                  {upcomingWorkouts.map((workout, index) => (
+                  {upcomingWorkouts.map((workout) => (
                     <div
                       key={workout.id}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg"

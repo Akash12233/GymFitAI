@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
@@ -9,6 +9,7 @@ import Pricing from './pages/Pricing';
 import Account from './pages/Account';
 import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
+import "./index.css";
 
 function App() {
   

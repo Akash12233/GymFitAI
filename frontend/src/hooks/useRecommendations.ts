@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { recommendationService, PlanInput } from '../services/recommendationService';
+import { recommendationService, type PlanInput } from '../services/recommendationService';
 import { useNotifications } from '../contexts/NotificationContext';
-import { ApiError } from '../services/api';
+import { type ApiError } from '../services/api';
 
 interface UseRecommendationsReturn {
   loading: boolean;

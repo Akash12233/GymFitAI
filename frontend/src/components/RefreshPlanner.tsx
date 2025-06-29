@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { useUser } from '../contexts/UserContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { recommendationService } from '../services/recommendationService';
-import { UpdateExercisesRequest } from '../services/recommendationService';
 import { getTodayString } from '../utils/dateUtils';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorBoundary from './ErrorBoundary';
@@ -26,7 +25,7 @@ const RefreshPlaner: React.FC<WorkoutPlanCreatorProps> = ({ onClose }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   
   const { register, handleSubmit, formState: { errors } } = useForm<PlanForm>();
-  const { addWorkout, syncWithServer } = useUser();
+  const { syncWithServer } = useUser();
   const { addNotification } = useNotifications();
 
   const steps = [

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Crown, Lock, Star, ArrowRight } from 'lucide-react';
+import { Crown, Star, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface SubscriptionGateProps {

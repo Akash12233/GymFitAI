@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { Eye, EyeOff, Mail, Lock, User, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { authService } from '../services/authService';
-import { useUser } from '../contexts/UserContext';
 import GoogleLoginButton from '../components/Buttons/GoogleLoginButton';
 
 interface LoginForm {
@@ -25,7 +23,7 @@ const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { login, register, loginWithGoogle, isLoading } = useAuth();
+  const { login, register, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const loginForm = useForm<LoginForm>();

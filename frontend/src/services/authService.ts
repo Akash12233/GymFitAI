@@ -1,5 +1,5 @@
 
-import { apiClient, retryRequest, ApiResponse } from './api';
+import { apiClient, retryRequest, type ApiResponse } from './api';
 interface AutoFillData {
   // Personal Info
   name?: string;
@@ -67,8 +67,12 @@ interface AuthResponse {
   user: {
     id: string;
     email: string;
-    profile?: any;
+    profile: any;
     tier: 'free' | 'premium';
+    premiumExpiry: Date | null;
+    workoutPhotos: string[]; // Cloudinary URLs
+    strengthInfo: any;
+    preferences: any;
   };
   accessToken: string;
   refreshToken: string;
@@ -79,7 +83,7 @@ interface User {
    _id?: string;
   email: string;
   workoutPhotos: string[]; // Cloudinary URLs
-
+  avatar?: string; // URL to user's avatar image
   profile: {
     name?: string;
     gender?: 'male' | 'female' | 'other';
@@ -303,7 +307,7 @@ class AuthService {
   // Change password
   async changePassword(oldPassword: string, newPassword: string): Promise<boolean> {
     try {
-      const response = await retryRequest(() => 
+      await retryRequest(() => 
         apiClient.post<ApiResponse<void>>('/user/change-password', {
           oldPassword,
           newPassword

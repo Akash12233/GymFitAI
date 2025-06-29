@@ -2,19 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Check, 
-  Crown, 
   Zap, 
-  Star,
-  Users,
-  Brain,
-  BarChart3,
-  Heart,
-  Shield,
-  Headphones
+  Star
 } from 'lucide-react';
-import { useNavigate, useNavigation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchOfferings, handleSubscribe } from '../utils/revenueCat';
-import { Package } from '@revenuecat/purchases-js';
+import {type Package } from '@revenuecat/purchases-js';
 import { useAuth } from '../contexts/AuthContext';
 import { transactionService } from '../services/transactionService';
 
@@ -31,7 +24,11 @@ interface Plans {
   limitations?: string[];
   identifier?: string; // Added identifier for package
 }
-const plansFeaturesAndLimitations = {
+const plansFeaturesAndLimitations: {
+  0: { features: string[]; limitations: string[] };
+  1: { features: string[]; limitations: string[] };
+  2: { features: string[]; limitations: string[] };
+} = {
   0: {
     features: [
         'Unlimited AI coaching',
@@ -108,16 +105,16 @@ const Pricing: React.FC = () => {
       const plan: Plans = {
         name: pkg.webBillingProduct.title,
         price: {
-          monthly: (pkg.webBillingProduct.currentPrice.amount ?? 0) /100 ,
-          yearly: Number(((pkg.webBillingProduct.currentPrice.amount ?? 0)/100 * 12 * 0.83 ).toFixed(2)), // Assuming 17% discount for yearly
+          monthly: (pkg.webBillingProduct.currentPrice.amount ?? 0) / 100,
+          yearly: Number(((pkg.webBillingProduct.currentPrice.amount ?? 0) / 100 * 12 * 0.83).toFixed(2)), // Assuming 17% discount for yearly
         },
-        currency: pkg.webBillingProduct.currentPrice.currency,
-        description: `Subscription plan for ${pkg.webBillingProduct.title}`,
+        features: plansFeaturesAndLimitations[offerings.indexOf(pkg) as 0 | 1 | 2].features,
+        limitations: plansFeaturesAndLimitations[offerings.indexOf(pkg) as 0 | 1 | 2].limitations,
         icon: <Zap className="w-8 h-8" />,
         color: 'from-primary-600 to-neon-pink',
-        features: plansFeaturesAndLimitations[offerings.indexOf(pkg)].features,
-        limitations: plansFeaturesAndLimitations[offerings.indexOf(pkg)].limitations,
-        identifier: pkg.identifier
+        identifier: pkg.identifier,
+        currency: '',
+        description: ''
       };
       return plan;
     });

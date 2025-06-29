@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { exerciseService, Exercise } from '../services/exerciseService';
+import { exerciseService, type Exercise } from '../services/exerciseService';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
-import { ApiError } from '../services/api';
+import { type ApiError } from '../services/api';
 
 interface UseWorkoutsReturn {
   exercises: Exercise[];

@@ -10,13 +10,11 @@ import {
   CreditCard, 
   User, 
   LogOut,
-  Bell,
-  Settings
+  Bell
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import NotificationPanel from './NotificationPanel';
 import LogoutModal from './LogoutModal';
-import { profile } from 'console';
 
 interface LayoutProps {
   children: React.ReactNode;

@@ -7,17 +7,14 @@ import {
   Pill, 
   Crown, 
   Send,
-  Sparkles,
-  TrendingUp,
-  Clock,
-  Target
+  Sparkles
 } from 'lucide-react';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { useAuth } from '../contexts/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorBoundary from '../components/ErrorBoundary';
 import ReactMarkdown from 'react-markdown';
-import { PlannerReport } from '../services/plannerService';
+import { type PlannerReport } from '../services/plannerService';
 import { usePlanner } from '../hooks/useplanner';
 import { useUser } from '../contexts/UserContext';
 
@@ -32,7 +29,7 @@ const Recommendations: React.FC = () => {
       timestamp: new Date()
     }
   ]);
-    const { getPlanner, getPlannerReport} = usePlanner();
+    const { getPlannerReport} = usePlanner();
     const [planner, setplanner]  = useState<PlannerReport>();
 
    useEffect(() => {

@@ -1,7 +1,7 @@
 
-import { Package, Purchases } from '@revenuecat/purchases-js';
+import { type Package, Purchases } from '@revenuecat/purchases-js';
 
-const WEB_BILLING_PUBLIC_API_KEY = import.meta.env.VITE_REVENUE_CAT_WEB_BILLING_PUBLIC_API_KEY;
+const WEB_BILLING_PUBLIC_API_KEY = import.meta.env.VITE_REVENUE_CAT_WEB_BILLING_PUBLIC_API_KEY ?? "";
 
 let configured = false;
 

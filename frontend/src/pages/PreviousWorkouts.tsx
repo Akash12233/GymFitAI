@@ -11,7 +11,7 @@ import {
   BarChart3,
   Target
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { useUser } from '../contexts/UserContext';
 import { useAuth } from '../contexts/AuthContext';
 import SubscriptionGate from '../components/SubscriptionGate';

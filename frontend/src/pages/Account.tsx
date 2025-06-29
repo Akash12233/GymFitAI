@@ -12,29 +12,22 @@ import {
   Moon,
   Sun,
   Download,
-  Trash2,
   Edit3,
   Save,
   X,
   Upload,
-  Eye,
-  Plus,
   Check,
   AlertCircle,
-  Star,
   Activity,
   Target,
   Utensils,
-  Clock,
   CheckCircle,
   Calculator,
-  TrendingUp,
   Info,
   Brain,
-  Crown,
-  Sparkles
+  Crown
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { useForm } from 'react-hook-form';
@@ -96,26 +89,26 @@ const Account: React.FC = () => {
   const hasSubscription = user?.tier === 'premium';
 
   const [bodyFatResult, setBodyFatResult] = useState<BodyFatCalculation | null>(null);
-  const [bodyFatHistory, setBodyFatHistory] = useState<BodyFatCalculation[]>([
-    { 
-      waist: 85, 
-      neck: 38, 
-      hip: 95, 
-      bodyFatPercentage: 15.2, 
-      classification: 'Fitness', 
-      recommendedRange: '14-17%',
-      date: '2024-01-01' 
-    },
-    { 
-      waist: 83, 
-      neck: 38, 
-      hip: 94, 
-      bodyFatPercentage: 14.8, 
-      classification: 'Fitness', 
-      recommendedRange: '14-17%',
-      date: '2024-01-15' 
-    }
-  ]);
+  // const [bodyFatHistory, setBodyFatHistory] = useState<BodyFatCalculation[]>([
+  //   { 
+  //     waist: 85, 
+  //     neck: 38, 
+  //     hip: 95, 
+  //     bodyFatPercentage: 15.2, 
+  //     classification: 'Fitness', 
+  //     recommendedRange: '14-17%',
+  //     date: '2024-01-01' 
+  //   },
+  //   { 
+  //     waist: 83, 
+  //     neck: 38, 
+  //     hip: 94, 
+  //     bodyFatPercentage: 14.8, 
+  //     classification: 'Fitness', 
+  //     recommendedRange: '14-17%',
+  //     date: '2024-01-15' 
+  //   }
+  // ]);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   
   const [progressPhotos, setProgressPhotos] = useState<ProgressPhoto[]>([
@@ -176,7 +169,6 @@ const Account: React.FC = () => {
       });
     }
   }, [user]);
-  const watchedBodyType = watch('bodyType');
 
   const tabs = [
     { id: 'profile', name: 'Profile', icon: <User className="w-5 h-5" /> },
@@ -207,26 +199,6 @@ const Account: React.FC = () => {
   ];
 
   
-  const stats = [
-    {
-      label: 'Current Streak',
-      value: `${user?.profile.currentStreak} days`,
-      icon: <Activity className="w-5 h-5 text-orange-400" />,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      label: 'Workouts Completed',
-      value: user?.profile.workoutsCompleted,
-      icon: <Target className="w-5 h-5 text-green-400" />,
-      color: 'from-green-500 to-emerald-500'
-    },
-    {
-      label: 'Success Rate',
-      value: `${Math.round(((user?.profile.workoutsCompleted ?? 0) / (user?.profile.totalWorkouts ?? 1)) * 100)}%`,
-      icon: <Crown className="w-5 h-5 text-yellow-400" />,
-      color: 'from-yellow-500 to-orange-500'
-    }
-  ];
 
 
   // Mock analytics data
@@ -447,7 +419,6 @@ const Account: React.FC = () => {
 
   const saveBodyFatResult = () => {
     if (bodyFatResult) {
-      setBodyFatHistory(prev => [bodyFatResult, ...prev]);
       setBodyFatResult(null);
       setBodyFatMeasurements({ waist: '', neck: '', hip: '' });
       setValidationErrors({});
