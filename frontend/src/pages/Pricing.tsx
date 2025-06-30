@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Check, 
@@ -12,45 +12,39 @@ import {
   Shield,
   Headphones
 } from 'lucide-react';
-import { useNavigate, useNavigation } from 'react-router-dom';
-import { fetchOfferings, handleSubscribe } from '../utils/revenueCat';
-import { Package } from '@revenuecat/purchases-js';
-import { useAuth } from '../contexts/AuthContext';
-import { transactionService } from '../services/transactionService';
 
-interface Plans {
-  name: string;
-  price: { monthly: number; yearly: number };
-  currency: string;
-  description: string;
-  icon: React.ReactNode;
-  color: string;
-  popular?: boolean;
-  lifetime?: boolean;
-  features: string[];
-  limitations?: string[];
-  identifier?: string; // Added identifier for package
-}
-const plansFeaturesAndLimitations = {
-  0: {
-    features: [
-        'Unlimited AI coaching',
-        'Detailed progress analytics',
-        'Custom workout creation',
-        'Nutrition planning & tracking',
-        'Advanced goal setting',
-        'Wearable device integration',
-        'Priority support',
-        'Export workout data',
-        'Meal planning assistant',
-        'Recovery recommendations'
+const Pricing: React.FC = () => {
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+
+  const plans = [
+    {
+      name: 'Free',
+      price: { monthly: 0, yearly: 0 },
+      description: 'Perfect for getting started with your fitness journey',
+      icon: <Users className="w-8 h-8" />,
+      color: 'from-gray-600 to-gray-700',
+      features: [
+        'Basic workout tracking',
+        'Limited AI suggestions (5/month)',
+        'Community access',
+        'Basic progress calendar',
+        'Mobile app access',
+        'Email support'
       ],
       limitations: [
-        
+        'No detailed analytics',
+        'No nutrition planning',
+        'No custom workout creation'
       ]
-  },
-  1: {
-     features: [
+    },
+    {
+      name: 'Pro',
+      price: { monthly: 19, yearly: 190 },
+      description: 'Unlock the full power of AI coaching and advanced features',
+      icon: <Brain className="w-8 h-8" />,
+      color: 'from-primary-600 to-neon-pink',
+      popular: true,
+      features: [
         'Unlimited AI coaching',
         'Detailed progress analytics',
         'Custom workout creation',
@@ -61,11 +55,16 @@ const plansFeaturesAndLimitations = {
         'Export workout data',
         'Meal planning assistant',
         'Recovery recommendations'
-      ],
-      limitations: []
-  },
-  2: {
-     features: [
+      ]
+    },
+    {
+      name: 'Platinum',
+      price: { monthly: 299, yearly: 299 },
+      description: 'Lifetime access with exclusive features and personal coaching',
+      icon: <Crown className="w-8 h-8" />,
+      color: 'from-yellow-500 to-orange-500',
+      lifetime: true,
+      features: [
         'Everything in Pro',
         'Lifetime access (one-time payment)',
         '1-on-1 coaching sessions (4/month)',
@@ -164,44 +163,6 @@ const Pricing: React.FC = () => {
       answer: 'Yes, we offer a 50% discount for students with valid student ID. Contact support for details.'
     }
   ];
-
-  const handleSubscrpition = async (packageId: string) => {
-    if (!user) {
-      console.error('User not authenticated. Cannot subscribe.');
-      return;
-    }
-    handleSubscribe(packageId, offerings, user._id ?? "").then((d) => {
-      if (!d) {
-        console.error('Subscription failed. No data returned.');
-        return;
-      }
-      console.log('Subscription successful:', d);
-      transactionService.saveTransaction({
-        userId: d.userId ?? user._id ?? 'someId',
-        planAmount: Number(d.planAmount) ?? 0,
-        amount: Number(d.amount),
-        amountInWords: d.amountInWords,
-        transactionDate: d.transactionDate,
-        transactionId: d.transactionId,
-        platform: d.platform,
-        status: d.status as 'pending' | 'success' | 'failed' | 'refunded',
-        premiumExpiry: d.premiumExpiry
-      }).then((data) => {
-        console.log('Saved transaction:', data);
-        
-        alert('Subscription successful! Redirecting to dashboard...');
-        
-        navigate('/dashboard');
-      }).catch((error) => {
-        console.error('Failed to save transaction:', error);
-        alert('Subscription successful, but failed to save transaction. Please contact support.');
-      });
-      
-    }).catch((error) => {
-      console.error('Subscription failed:', error);
-      alert('Failed to subscribe. Please try again later.');
-    });
-  };
 
   return (
     <div className="min-h-screen bg-gray-900 py-8">
@@ -302,7 +263,7 @@ const Pricing: React.FC = () => {
                 )}
                 {billingCycle === 'yearly' && !plan.lifetime && plan.price.monthly > 0 && (
                   <p className="text-sm text-green-400 mt-2">
-                    Save ${(plan.price.monthly * 12 - plan.price.yearly).toFixed(2)} per year
+                    Save ${(plan.price.monthly * 12 - plan.price.yearly)} per year
                   </p>
                 )}
               </div>
@@ -332,7 +293,6 @@ const Pricing: React.FC = () => {
                     ? 'bg-gray-700 hover:bg-gray-600 text-white'
                     : `bg-gradient-to-r ${plan.color} text-white hover:shadow-lg hover:shadow-primary-500/25`
                 }`}
-                onClick={() => plan.name === 'Free' ? navigate('/dashboard') : handleSubscrpition(plan.identifier ?? '')}
               >
                 {plan.name === 'Free' ? 'Get Started' : `Start ${plan.name} Plan`}
               </button>

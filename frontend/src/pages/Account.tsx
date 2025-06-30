@@ -12,33 +12,29 @@ import {
   Moon,
   Sun,
   Download,
-  Trash2,
   Edit3,
   Save,
   X,
   Upload,
-  Eye,
-  Plus,
   Check,
   AlertCircle,
-  Star,
   Activity,
   Target,
   Utensils,
-  Clock,
   CheckCircle,
   Calculator,
-  TrendingUp,
   Info,
-  Brain
+  Brain,
+  Crown
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { useForm } from 'react-hook-form';
 import { authService } from '../services/authService';
 import { recommendationService } from '../services/recommendationService';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileForm {
   name: string;
@@ -90,32 +86,36 @@ const Account: React.FC = () => {
     hip: ''
   });
   console.log(user);
+  const hasSubscription = user?.tier === 'premium';
+
   const [bodyFatResult, setBodyFatResult] = useState<BodyFatCalculation | null>(null);
-  const [bodyFatHistory, setBodyFatHistory] = useState<BodyFatCalculation[]>([
-    { 
-      waist: 85, 
-      neck: 38, 
-      hip: 95, 
-      bodyFatPercentage: 15.2, 
-      classification: 'Fitness', 
-      recommendedRange: '14-17%',
-      date: '2024-01-01' 
-    },
-    { 
-      waist: 83, 
-      neck: 38, 
-      hip: 94, 
-      bodyFatPercentage: 14.8, 
-      classification: 'Fitness', 
-      recommendedRange: '14-17%',
-      date: '2024-01-15' 
-    }
-  ]);
+  // const [bodyFatHistory, setBodyFatHistory] = useState<BodyFatCalculation[]>([
+  //   { 
+  //     waist: 85, 
+  //     neck: 38, 
+  //     hip: 95, 
+  //     bodyFatPercentage: 15.2, 
+  //     classification: 'Fitness', 
+  //     recommendedRange: '14-17%',
+  //     date: '2024-01-01' 
+  //   },
+  //   { 
+  //     waist: 83, 
+  //     neck: 38, 
+  //     hip: 94, 
+  //     bodyFatPercentage: 14.8, 
+  //     classification: 'Fitness', 
+  //     recommendedRange: '14-17%',
+  //     date: '2024-01-15' 
+  //   }
+  // ]);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   
   const [progressPhotos, setProgressPhotos] = useState<ProgressPhoto[]>([
   ]);
   const [showAnalytics, setshowAnalytics] = useState(false);
+  const navigate = useNavigate();
+
   const currentWeigth  = user?.profile.weightKg || 0;
   const currentBodyfat = user?.profile.bodyfat || 0;
   const Height = user?.profile.heightCm || 100;
@@ -153,7 +153,7 @@ const Account: React.FC = () => {
     marketingEmails: false
   });
 
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<ProfileForm>();
+  const { register, handleSubmit, reset, watch, formState: { errors }, setValue } = useForm<ProfileForm>();
     useEffect(() => {
     if (user?.profile) {
       reset({
@@ -169,7 +169,6 @@ const Account: React.FC = () => {
       });
     }
   }, [user]);
-  const watchedBodyType = watch('bodyType');
 
   const tabs = [
     { id: 'profile', name: 'Profile', icon: <User className="w-5 h-5" /> },
@@ -198,6 +197,9 @@ const Account: React.FC = () => {
       image: 'https://images.pexels.com/photos/1552103/pexels-photo-1552103.jpeg?auto=compress&cs=tinysrgb&w=200&h=300&fit=crop'
     }
   ];
+
+  
+
 
   // Mock analytics data
   const [progressData, setprogressData] = useState<{
@@ -417,7 +419,6 @@ const Account: React.FC = () => {
 
   const saveBodyFatResult = () => {
     if (bodyFatResult) {
-      setBodyFatHistory(prev => [bodyFatResult, ...prev]);
       setBodyFatResult(null);
       setBodyFatMeasurements({ waist: '', neck: '', hip: '' });
       setValidationErrors({});
@@ -529,7 +530,32 @@ const Account: React.FC = () => {
           {isSaving ? 'Saving...' : isEditing ? 'Save' : 'Edit'}
         </button>
       </div>
-
+     {/* Profile Header */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-gray-800/60 rounded-xl p-6 border border-gray-700 mb-8"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-neon-pink rounded-full flex items-center justify-center text-2xl font-bold text-white">
+                {user?.profile.name?.charAt(0) || 'U'}
+               
+              </div>
+              <button className="absolute hidden -bottom-1 -right-1 p-2 bg-primary-600 rounded-full hover:bg-primary-700 transition-colors duration-200">
+                <Camera className="w-4 h-4 text-white" />
+              </button>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white">{user?.profile.name}</h2>
+              <p className="text-gray-400">{user?.email}</p>
+              <div className="flex items-center space-x-2 mt-1">
+                <Crown className="w-4 h-4 text-yellow-400" />
+                <span className="text-sm text-yellow-400 capitalize">{user?.tier} Member</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       <form onSubmit={handleSubmit(handleSave)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
@@ -711,8 +737,7 @@ const Account: React.FC = () => {
       </div>
     </div>
   );
-
-  const renderAnalyticsTab = () => (
+const renderAnalyticsTab = () => (
     <div className="space-y-8">
       <h2 className="text-2xl font-bold text-white">Analytics</h2>
       
@@ -1121,6 +1146,55 @@ const Account: React.FC = () => {
     </div>
     
   );
+  const renderAnalyticsContent = () => {
+    if (!hasSubscription) {
+      return (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-gradient-to-r from-yellow-900/50 to-orange-900/50 rounded-xl p-8 border border-yellow-500/30 text-center"
+        >
+          {/* Premium Icon */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <Crown className="w-8 h-8 text-white" />
+          </motion.div>
+
+          {/* Content */}
+          <h3 className="text-2xl font-bold text-white mb-3">
+            Upgrade to Pro
+          </h3>
+          <p className="text-gray-300 mb-2">
+            <span className="font-semibold text-yellow-400">Analytics</span> is a premium feature
+          </p>
+          <p className="text-gray-400 text-sm mb-6">
+            Get detailed insights into your workout performance, progress tracking, and advanced analytics.
+          </p>
+
+          {/* CTA Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/pricing')}
+            className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-yellow-500/25 transition-all duration-300"
+          >
+            Upgrade to Pro
+          </motion.button>
+
+          {/* Pricing Hint */}
+          <p className="text-xs text-gray-500 mt-4">
+            Starting at $4/month 
+          </p>
+        </motion.div>
+      );
+    }
+
+    return renderAnalyticsTab();
+  };
 
   const renderSettingsTab = () => (
     <div className="space-y-8">
@@ -1368,7 +1442,7 @@ const Account: React.FC = () => {
                 transition={{ duration: 0.2 }}
               >
                 {activeTab === 'profile' && renderProfileTab()}
-                {activeTab === 'analytics' && renderAnalyticsTab()}
+                {activeTab === 'analytics' && renderAnalyticsContent()}
                 {activeTab === 'settings' && renderSettingsTab()}
                 {activeTab === 'billing' && renderBillingTab()}
               </motion.div>

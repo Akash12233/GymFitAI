@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { exerciseService, Exercise, CalorieData } from '../services/exerciseService';
-import { plannerService, Planner } from '../services/plannerService';
+import { exerciseService, type Exercise, type CalorieData } from '../services/exerciseService';
+import { plannerService, type Planner } from '../services/plannerService';
 import { useAuth } from './AuthContext';
 import { useNotifications } from './NotificationContext';
-import { getTodayString, formatDate } from '../utils/dateUtils';
+import { getTodayString } from '../utils/dateUtils';
 
 interface UserStats {
   age: number;
@@ -95,7 +95,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [calorieData, setCalorieData] = useState<CalorieData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [givenDate, setgivenDate] = useState(getTodayString());
+  const [givenDate] = useState(getTodayString());
   
   const { user } = useAuth();
   const { addNotification } = useNotifications();
@@ -229,12 +229,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateWorkout = async (id: string, workoutUpdate: Partial<Workout>): Promise<boolean> => {
-    try {
+    try {   
       setWorkouts(prev => {
         const updated = prev.map(w => {
           if (w.id === id) {
             const updatedWorkout = { ...w, ...workoutUpdate };
-            
+              
             // Update user stats if workout is completed
             if (updatedWorkout.completed && !w.completed) {
               setUserStats(prevStats => prevStats ? {
@@ -274,7 +274,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const exerciseUpdates = workout.exercises.map(ex => ({
         _id: ex.id,
         status: {
-          completedByUser: ex.status.completedByUser,
+          completedByUser: workoutUpdate.completed || false,
           totalSets: ex.avgSets,
           completedSets: ex.status.completedByUser ? ex.avgSets : 0,
           totalReps: ex.status.completedByUser ? ex.status.totalReps: 0,
@@ -338,7 +338,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const getWorkoutsByDate = (date: string): Workout[] => {
     // console.log("workouts",workouts);
     
-    return workouts.filter((w, i) =>{
+    return workouts.filter((w) =>{
       return w.date === date +"T00:00:00.000Z";
     });
   };

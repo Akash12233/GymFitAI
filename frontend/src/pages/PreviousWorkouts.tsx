@@ -11,9 +11,10 @@ import {
   BarChart3,
   Target
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { useUser } from '../contexts/UserContext';
 import { useAuth } from '../contexts/AuthContext';
+import SubscriptionGate from '../components/SubscriptionGate';
 
 const PreviousWorkouts: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,6 +24,7 @@ const PreviousWorkouts: React.FC = () => {
   const {user} = useAuth();
 
   const strengthInfo = user?.strengthInfo;
+    const hasSubscription = user?.tier === 'premium';
   console.log(calorieData);
   // Mock data for charts
   const strengthBarData = [
@@ -72,8 +74,7 @@ const PreviousWorkouts: React.FC = () => {
     a.download = 'workout-history.csv';
     a.click();
   };
-
-  return (
+const WorkoutContent = () => (
     <div className="min-h-screen bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -188,23 +189,23 @@ const PreviousWorkouts: React.FC = () => {
               <h3 className="text-xl font-bold text-white">Strength Progression</h3>
             </div>
             <div className="h-64 bg-gray-800 p-4 rounded-xl border border-gray-700">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={strengthBarData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} />
-                <YAxis stroke="#9CA3AF" fontSize={12} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
-                    borderRadius: '8px',
-                    color: '#fff'
-                  }}
-                />
-                <Bar dataKey="value" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={strengthBarData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} />
+                  <YAxis stroke="#9CA3AF" fontSize={12} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#1F2937',
+                      border: '1px solid #374151',
+                      borderRadius: '8px',
+                      color: '#fff'
+                    }}
+                  />
+                  <Bar dataKey="value" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </motion.div>
 
           {/* Volume Chart */}
@@ -219,23 +220,23 @@ const PreviousWorkouts: React.FC = () => {
               <h3 className="text-xl font-bold text-white">Calories Burned</h3>
             </div>
             <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={calorieData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="date" stroke="#9CA3AF" fontSize={12} />
-                <YAxis stroke="#9CA3AF" fontSize={12} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#1F2937', 
-                    border: '1px solid #374151',
-                    borderRadius: '8px'
-                  }}
-                  formatter={(value: number) => [`${value.toFixed(2)} cal`, 'Calories']}
-                />
-                <Bar dataKey="totalCaloriesBurnt" fill="#F97316" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={calorieData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <XAxis dataKey="date" stroke="#9CA3AF" fontSize={12} />
+                  <YAxis stroke="#9CA3AF" fontSize={12} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#1F2937', 
+                      border: '1px solid #374151',
+                      borderRadius: '8px'
+                    }}
+                    formatter={(value: number) => [`${value.toFixed(2)} cal`, 'Calories']}
+                  />
+                  <Bar dataKey="totalCaloriesBurnt" fill="#F97316" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </motion.div>
         </div>
 
@@ -360,6 +361,15 @@ const PreviousWorkouts: React.FC = () => {
         )}
       </div>
     </div>
+  );
+    return (
+    <SubscriptionGate
+      hasSubscription={hasSubscription}
+      featureName="Workout Analytics"
+      description="Get detailed insights into your workout history, progress tracking, and performance analytics."
+    >
+      <WorkoutContent />
+    </SubscriptionGate>
   );
 };
 

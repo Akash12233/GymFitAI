@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { useUser } from '../contexts/UserContext';
-import { formatDate, getTodayString, isPastDate, isFutureDate, formatDateForCalender } from '../utils/dateUtils';
+import { formatDate, getTodayString, isPastDate, formatDateForCalender } from '../utils/dateUtils';
 import {  isCurrentDays } from '../utils/isCurrentDay';
 
 const ProgressCalendar: React.FC = () => {
@@ -120,8 +120,8 @@ const ProgressCalendar: React.FC = () => {
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1 mb-4">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day) => (
-          <div key={day} className="text-center text-xs font-medium text-gray-500 py-2">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day,i) => (
+          <div key={i} className="text-center text-xs font-medium text-gray-500 py-2">
             {day}
           </div>
         ))}

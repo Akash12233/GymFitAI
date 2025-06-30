@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ApiError } from '../services/api';
+import { type ApiError } from '../services/api';
 
 // Generic API hook for handling loading, error, and data states
 interface UseApiState<T> {

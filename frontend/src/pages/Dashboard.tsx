@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, sync } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { motion} from 'framer-motion';
 import { 
   Plus, 
   Play, 
   Pause, 
   CheckCircle, 
-  Calendar,
   Target,
-  Zap,
   Trophy,
-  Clock,
   Flame,
-  Activity
+  Activity,
+    Search
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUser } from '../contexts/UserContext';
@@ -21,18 +19,18 @@ import WorkoutTracker from '../components/WorkoutTracker';
 import ProgressCalendar from '../components/ProgressCalendar';
 import StatsCard from '../components/StatsCard';
 import RefreshPlaner from '../components/RefreshPlanner';
-import { PlannerReport } from '../services/plannerService';
-import { usePlanner } from '../hooks/useplanner';
+import ExerciseSearchModal from '../components/ExerciseSearchModal';
 
 
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const { userStats, workouts, getTodaysWorkout , refreshData} = useUser();
+  const { workouts, getTodaysWorkout } = useUser();
   const [showPlanCreator, setShowPlanCreator] = useState(false);
   const [showRefreshPlan,setShowRefreshPlan] = useState(false);
   const [activeWorkout, setActiveWorkout] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showExerciseSearch, setShowExerciseSearch] = useState(false);
   
  
 
@@ -77,7 +75,6 @@ const Dashboard: React.FC = () => {
 
     return streak;
   })();
-  const totalWorkouts = userStats?.totalWorkouts || workouts.length;
 
   const handleWorkoutComplete = () => {
     setActiveWorkout(null);
@@ -128,13 +125,28 @@ const Dashboard: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            {getGreeting}
-          </h1>
-          <p className="text-gray-400 text-lg">
-            Ready to crush your fitness goals today? Let's get started!
-          </p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {getGreeting}
+              </h1>
+              <p className="text-gray-400 text-lg">
+                Ready to crush your fitness goals today? Let's get started!
+              </p>
+            </div>
+  {/* Exercise Search Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowExerciseSearch(true)}
+              className="mt-4 md:mt-0 flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-primary-600 to-electric-400 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-300 transform hover:scale-105"
+            >
+              <Search className="w-5 h-5" />
+              <span>Search Exercises</span>
+            </motion.button>
+          </div>
         </motion.div>
+
 
         {/* Error Message */}
         {error && (
@@ -270,7 +282,7 @@ const Dashboard: React.FC = () => {
               >
                 <h3 className="text-lg font-semibold text-white mb-4">Upcoming Workouts</h3>
                 <div className="space-y-3">
-                  {upcomingWorkouts.map((workout, index) => (
+                  {upcomingWorkouts.map((workout) => (
                     <div
                       key={workout.id}
                       className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg"
@@ -353,6 +365,11 @@ const Dashboard: React.FC = () => {
       {showPlanCreator && (
         <WorkoutPlanCreator onClose={() => setShowPlanCreator(false)} />
       )}
+       {/* Exercise Search Modal */}
+      <ExerciseSearchModal 
+        isOpen={showExerciseSearch}
+        onClose={() => setShowExerciseSearch(false)}
+      />
     </div>
   );
 };

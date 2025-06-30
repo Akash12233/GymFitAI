@@ -7,12 +7,10 @@ import {
   Target, 
   Users, 
   Star, 
-  Play,
   CheckCircle,
   ArrowRight,
   Dumbbell,
-  Trophy,
-  Clock
+  Trophy
 } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
@@ -120,10 +118,10 @@ const LandingPage: React.FC = () => {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
                 
-                <button className="group px-8 py-4 border border-gray-600 rounded-lg font-semibold text-lg hover:border-primary-500 hover:bg-primary-500/10 transition-all duration-300 flex items-center justify-center space-x-2">
+                {/* <button className="group px-8 py-4 border border-gray-600 rounded-lg font-semibold text-lg hover:border-primary-500 hover:bg-primary-500/10 transition-all duration-300 flex items-center justify-center space-x-2">
                   <Play className="w-5 h-5" />
                   <span>Watch Demo</span>
-                </button>
+                </button> */}
               </div>
 
               {/* Stats */}
@@ -151,7 +149,7 @@ const LandingPage: React.FC = () => {
             >
               <div className="relative z-10">
                 <img
-                  src="https://images.pexels.com/photos/416717/pexels-photo-416717.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop"
+                  src="https://i.pinimg.com/736x/ca/cc/05/cacc0534ae93a76083bd46a127f1e30c.jpg"
                   alt="Fitness Training"
                   className="rounded-2xl shadow-2xl w-full"
                 />

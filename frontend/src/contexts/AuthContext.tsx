@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService, User, LoginRequest, RegisterRequest } from '../services/authService';
+import { authService, type User, type LoginRequest, type RegisterRequest } from '../services/authService';
 import { useNotifications } from './NotificationContext';
 
 interface AuthContextType {
@@ -64,7 +64,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   setIsLoading(true);
   try {
     const response = await authService.loginWithGoogle(googleToken);
-    setUser(response.user);
+    setUser({
+      ...response.user,
+      workoutPhotos: response.user.workoutPhotos ?? [],
+      strengthInfo: response.user.strengthInfo ?? {},
+      premiumExpiry: response.user.premiumExpiry ?? null,
+      preferences: response.user.preferences ?? {},
+    });
 
     addNotification({
       type: 'success',

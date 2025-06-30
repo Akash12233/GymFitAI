@@ -1,4 +1,4 @@
-import { apiClient, retryRequest, ApiResponse } from './api';
+import { apiClient, retryRequest, type ApiResponse } from './api';
 
 // Exercise Types
 interface GymExercise {
@@ -57,7 +57,7 @@ class ExerciseService {
   // Get all gym exercises
   async getGymExercises(): Promise<GymExercise[]> {
     try {
-      console.log("1")
+      // console.log("1")
       const response = await retryRequest(() => 
         apiClient.get<ApiResponse<GymExercise[]>>('/exercise/getgymexercises')
       );

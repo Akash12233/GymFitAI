@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import axios, { type AxiosInstance, type AxiosResponse, AxiosError } from 'axios';
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001/api/v1';
@@ -110,11 +110,11 @@ const retryRequest = async <T>(
   
   for (let i = 0; i < maxRetries; i++) {
     try {
-      console.log(`Attempt ${i + 1}`);
+      // console.log(`Attempt ${i + 1}`);
       const response = await requestFn();
-      console.log(response.data.data)
+      // console.log(response.data.data)
       return response.data.data;
-    } catch (error) {
+    } catch (error: any) {
       lastError = error;
       
       // Don't retry on client errors (4xx)

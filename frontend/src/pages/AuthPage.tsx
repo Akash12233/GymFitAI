@@ -25,7 +25,7 @@ const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { login, register, loginWithGoogle, isLoading } = useAuth();
+  const { login, register, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const loginForm = useForm<LoginForm>();
