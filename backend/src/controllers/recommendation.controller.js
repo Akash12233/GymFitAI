@@ -204,6 +204,7 @@ const planRecommendation = asyncHandler(async(req, res)=>{
                 }
 
                 exercise['userId'] = user_id;
+                
 
                 const created_exercise = await Exercises.create(exercise);
 

@@ -84,7 +84,7 @@ const Pricing: React.FC = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const navigate = useNavigate();
   const {user} = useAuth(); // Assuming you have a useAuth hook to get user info
-  // console.log(user, "user");
+  console.log(user, "user");
   
   const [offerings, setOfferings] = useState<Package[]>([]);
   console.log('offerings', offerings);

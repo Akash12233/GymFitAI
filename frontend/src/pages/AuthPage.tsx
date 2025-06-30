@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { Eye, EyeOff, Mail, Lock, User, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { authService } from '../services/authService';
-import { log } from 'console';
 import { useUser } from '../contexts/UserContext';
 import GoogleLoginButton from '../components/Buttons/GoogleLoginButton';
 

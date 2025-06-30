@@ -38,7 +38,7 @@ const ExercisebyUser = asyncHandler(async(req, res) => {
     const exercises = await Exercises.find({
         userId : userId
     });
-
+    
     if(!exercises){
         throw new ApiError(400, "Unable to fetch exercises");
     }
@@ -59,7 +59,9 @@ const Exerciseupdated = asyncHandler(async(req, res) => {
     for(const exercise of exercises){
         const status = exercise.status;
         const complete = status.totalReps > 0 ? (status.completedReps / status.totalReps) * 100 : 0;
+        const reps = exercise.status.totalReps == 0 ? 12 : exercise.status.totalReps;
         status.completePercent = complete;
+        status.totalReps = reps;
         const updatedExercise = await Exercises.findByIdAndUpdate(
             exercise._id,
             { status: exercise.status },
@@ -74,8 +76,9 @@ const Exerciseupdated = asyncHandler(async(req, res) => {
     res.status(200).
     json(new ApiResponse(
         true,
-        "Exercises updated successfully!",
         {}
+        ,
+        "Exercises updated successfully!",
     ))
 
 });

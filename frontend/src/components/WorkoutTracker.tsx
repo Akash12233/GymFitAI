@@ -88,15 +88,7 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, on
   }, [workoutStartTime, isResting, restTimer, addNotification]);
 
   // Debounced backend sync
-  useEffect(() => {
-    const syncTimer = setTimeout(() => {
-      if (Object.keys(pendingUpdates).length > 0) {
-        syncToBackend();
-      }
-    }, 2000); // Sync after 2 seconds of inactivity
-
-    return () => clearTimeout(syncTimer);
-  }, [pendingUpdates]);
+ 
 
   const formatTime = (ms: number) => {
     const seconds = Math.floor(ms / 1000);
@@ -116,7 +108,8 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, on
         _id: exerciseId,
         ...data
       }));
-      
+      console.log("updates",updates);
+      if(!updates.length) return
       await updateExerciseStatus(updates);
       setPendingUpdates({});
       setHasError(false);
@@ -150,7 +143,6 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, on
     if (currentSetReps < currentExercise.avgReps) {
       const newCurrentSetReps = currentSetReps + 1;
       setCurrentSetReps(newCurrentSetReps);
-      console.log(currentSetReps)
       const newTotalCompletedReps = currentExercise.status.completedReps + 1;
       updateExerciseLocally(currentExercise.id, {
         status: {
@@ -289,13 +281,12 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({ workout, onComplete, on
       ? currentExercise.status.totalSets + 1 
       : Math.max(1, currentExercise.status.totalSets - 1);
     
-    const newTotalReps = newTotalSets * currentExercise.avgReps;
+    
     
     updateExerciseLocally(currentExercise.id, {
       status: {
         ...currentExercise.status,
         totalSets: newTotalSets,
-        totalReps: newTotalReps,
         completePercent: (currentExercise.status.completedSets / newTotalSets) * 100
       }
     });

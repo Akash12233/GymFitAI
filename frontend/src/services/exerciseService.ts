@@ -131,7 +131,6 @@ class ExerciseService {
       const response = await retryRequest(() => 
         apiClient.get<ApiResponse<Exercise[]>>('/statusexercise/exercisebyuser')
       );
-      console.log(response)
       return response;
     } catch (error) {
       console.error('Failed to fetch user exercises:', error);

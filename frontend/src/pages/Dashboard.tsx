@@ -36,7 +36,6 @@ const Dashboard: React.FC = () => {
   
  
 
-  console.log("user", user);
   
 
   const getGreeting = useMemo(() => {
@@ -217,7 +216,7 @@ const Dashboard: React.FC = () => {
                 <p className="text-gray-400 mb-4">
                   Create a personalized workout plan to get started on your fitness journey.
                 </p>
-                {!upcomingWorkouts &&
+                {upcomingWorkouts.length == 0 &&
                 <button
                   onClick={() => setShowPlanCreator(true)}
                   className="px-6 py-3 bg-gradient-to-r from-primary-600 to-neon-pink rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-300 transform hover:scale-105"
